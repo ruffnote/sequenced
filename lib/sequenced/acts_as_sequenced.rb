@@ -42,7 +42,7 @@ module Sequenced
         unless defined?(sequenced_options)
           include Sequenced::ActsAsSequenced::InstanceMethods
 
-          mattr_accessor :sequenced_options, instance_accessor: false
+          cattr_accessor :sequenced_options, instance_accessor: false
           self.sequenced_options = []
 
           before_save :set_sequential_ids
@@ -65,7 +65,7 @@ module Sequenced
 
     module InstanceMethods
       def set_sequential_ids
-        self.class.base_class.sequenced_options.each do |options|
+        self.class.sequenced_options.each do |options|
           Sequenced::Generator.new(self, options).set
         end
       end
